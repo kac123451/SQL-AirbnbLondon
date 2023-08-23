@@ -290,7 +290,7 @@ ORDER BY
     total_reviews DESC;
 
 
-### Lets check how reviews affects average availability,price and minimum nights spended
+### Check how reviews affects average availability,price and minimum nights spended
 
 SELECT 
     COUNT(number_of_reviews) Number_of_reviews,
