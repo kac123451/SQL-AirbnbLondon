@@ -1,0 +1,312 @@
+### Data Cleaning
+
+
+
+### Check for missing values
+SELECT
+    COUNT(neighbourhood_group), ### empty, to remove
+    COUNT(last_review),   ### missing values (16,780)
+    COUNT(reviews_per_month), ### empty, to remove
+    COUNT(license), ### missing values (16,780)
+    COUNT(id),
+    COUNT(name),
+    COUNT(host_name), ### missing values (5)
+    COUNT(host_id),
+    COUNT(neighbourhood),
+    COUNT(latitude),
+    COUNT(longitude),
+    COUNT(room_type),
+    COUNT(price),
+    COUNT(minimum_nights), 
+    COUNT(number_of_reviews),
+    COUNT(calculated_host_listings_count),
+    COUNT(availability_365),
+    COUNT(number_of_reviews_ltm)
+FROM
+    `logical-light-389912.AirBnb.airbnb_london`;
+
+### Check duplicates (No duplicates found)
+
+SELECT
+    COUNT(*) as duplicate
+FROM 
+    `logical-light-389912.AirBnb.airbnb_london`
+HAVING
+    duplicate < 1;
+
+
+### Check for NULLs (16780 records has null values)
+SELECT
+    *
+FROM 
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+WHERE
+    id			                          IS NULL OR
+    name			                       	IS NULL OR
+    host_id			                    	IS NULL OR
+    host_name			                    IS NULL OR
+    neighbourhood		                  IS NULL OR		
+    latitude		                      IS NULL OR
+    longitude		                      IS NULL OR	
+    room_type	          	            IS NULL OR			
+    price			          	            IS NULL OR
+    minimum_nights				            IS NULL OR	
+    number_of_reviews		              IS NULL OR		
+    reviews_per_month			            IS NULL OR	
+    calculated_host_listings_count	  IS NULL OR 
+    availability_365			          	IS NULL OR
+    number_of_reviews_ltm             IS NULL;
+
+
+
+### Create table for 
+
+CREATE TABLE IF NOT EXISTS `logical-light-389912.AirBnb.airbnb_london_cleaned` 
+  AS 
+    SELECT
+        id,
+        name,
+        host_id,
+        host_name,
+        neighbourhood,
+        latitude,
+        longitude,
+        room_type,
+        price,
+        minimum_nights,
+        number_of_reviews,
+        reviews_per_month,
+        calculated_host_listings_count,
+        availability_365,
+        number_of_reviews_ltm
+    FROM
+        `logical-light-389912.AirBnb.airbnb_london`;
+
+
+
+### Data manipulation
+
+
+
+  ### Fill Nulls with 0
+UPDATE 
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`                        /* 16,780 rows modified */
+SET
+    reviews_per_month = 0
+WHERE
+    reviews_per_month IS NULL;
+
+### price 0 in some records (Free hotels?)
+### Airbnb has no sorting option which is very hard verify on their website but I couldnt find hotels cheaper than 10 pounds
+
+### Removed all records which price is below 10 pounds
+
+DELETE FROM 
+    `logical-light-389912.AirBnb.airbnb_london_cleaned` /* 32 rows removed */
+WHERE
+    price < 10;
+
+### Calculations and Analysis
+
+### Count unique records                        ### 69319 Totals
+
+SELECT
+    COUNT(id)
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`;  
+
+### Count unique hosts
+
+ SELECT
+    COUNT(DISTINCT(host_id))
+ FROM 
+    `logical-light-389912.AirBnb.airbnb_london`;      
+
+### Count room_type
+
+SELECT
+    room_type,
+    COUNT(room_type) Totals
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    room_type
+ORDER BY
+    Totals DESC;
+
+  ### Average rent price
+
+SELECT 
+    MIN(price) Min_price,
+    MAX(price) Max_price,
+    CAST(AVG(price) AS INT64) Average_rent_price
+FROM
+   `logical-light-389912.AirBnb.airbnb_london_cleaned`;
+
+### Most popular Room type, +average price, and average availability
+
+SELECT
+    room_type,
+    COUNT(room_type) Room_Count,
+    CAST(AVG(price) AS INT64) Average_Price,
+    CAST(AVG(availability_365)AS INT64) Average_availability,
+    AVG(minimum_nights)
+FROM                                                     
+  `logical-light-389912.AirBnb.airbnb_london_cleaned` 
+GROUP BY room_type
+ORDER BY
+  Average_price;
+
+
+### Total rent places
+
+SELECT  
+    DISTINCT(neighbourhood),
+    COUNT(id) AS Total_available,
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    neighbourhood
+ORDER BY
+    Total_available DESC;
+
+
+  ### Average price in neighbourhood
+
+SELECT
+    DISTINCT(neighbourhood),
+    CAST(AVG(price) AS INT64) Average_price
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    neighbourhood
+ORDER BY
+    Average_price DESC;
+
+ 
+### Places available per neighbouroods
+
+
+SELECT  
+    DISTINCT(neighbourhood),
+    COUNT(id) AS TotalRooms_with_availability,
+    CAST(AVG(price)AS INT64) Average_room_price,
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+WHERE
+    availability_365 >= 1 
+GROUP BY
+    neighbourhood                                                     
+ORDER BY
+    TotalRooms_with_availability DESC,
+    Average_room_price;
+
+SELECT
+    neighbourhood,
+    CAST(AVG(price) AS INT64) Average_price,
+    COUNT(id) Total_hosts,
+    RANK() OVER(ORDER BY COUNT(id) DESC) AS rank_id,
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+WHERE
+    availability_365 >= 1
+GROUP BY
+    neighbourhood
+ORDER BY
+    Average_price desc,
+    total_hosts desc;
+
+
+### Places booked per neighbourhoods
+
+SELECT  
+    neighbourhood,
+    COUNT(id) AS TotalRooms_without_availability,
+    CAST(AVG(price)AS INT64) Average_room_price,
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned` 
+WHERE
+    availability_365 = 0                                  
+GROUP BY 
+    neighbourhood                                                     
+ORDER BY
+  Totalrooms_without_availability DESC;
+
+### Average price for Available and Unavailable 
+
+SELECT 
+    CASE WHEN (availability_365 = 0) THEN "Unavailable"
+    ELSE "Available" END AS Hotel_availability,
+    CAST(AVG(price)AS INT64) Average,
+FROM 
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    Hotel_availability;
+
+SELECT 
+    CASE WHEN (availability_365 = 0) THEN "Unavailable"
+    ELSE "Available" END AS Hotel_availability,
+    COUNT(id) Total_hosts,
+FROM 
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY 
+    Hotel_availability;
+
+
+### Neighbourhoods with highest amount of minimum nights spended on average
+
+
+SELECT
+    DISTINCT(neighbourhood),
+    ROUND(AVG(minimum_nights),1) Avg_minimum_nights,
+    AVG(price)
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    neighbourhood
+ORDER BY
+    Avg_minimum_nights DESC;
+
+
+### Total number of reviews         ### Westminster Most total_reviews
+SELECT
+    DISTINCT(neighbourhood),
+    CAST(AVG(number_of_reviews)AS INT64) Average_reviews
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    neighbourhood
+ORDER BY
+    Average_reviews DESC;
+
+SELECT
+    DISTINCT(neighbourhood),
+    SUM(number_of_reviews) total_reviews,
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    neighbourhood
+ORDER BY
+    total_reviews DESC;
+
+
+### Lets check how reviews affects average availability,price and minimum nights spended
+
+SELECT 
+    COUNT(number_of_reviews) Number_of_reviews,
+        CASE
+            WHEN number_of_reviews < 5 THEN '<5 reviews'
+            WHEN number_of_reviews BETWEEN 5 AND 10 THEN '5-10 reviews'
+            WHEN number_of_reviews BETWEEN 10 AND 15 THEN '<10-15 reviews'
+            WHEN number_of_reviews BETWEEN 15 AND 20 THEN '<15-20 reviews'
+            WHEN number_of_reviews > 20 THEN '>20 reviews' END as Reviews  , 
+        AVG(number_of_reviews) Average_amount_reviews,  
+        AVG(availability_365) Average_availability,
+        AVG(minimum_nights) Avg_min_nights,
+        AVG(price) Average_price
+FROM
+    `logical-light-389912.AirBnb.airbnb_london_cleaned`
+GROUP BY
+    Reviews
+ORDER BY 
+    Number_of_reviews DESC
