@@ -31,48 +31,28 @@ Share              -> Vizualizations(Tableau)
 
 For Tableau vizualizations click [here](https://public.tableau.com/app/profile/kacper.sarwuta/viz/AirbnbLondonreport/Dashboard3)
 
-**Key Insights:**
 
-* **69319** total properties with **45229** unique owners and **£177** Average price per night
+** Key Insights
 
+* There are 69,319 total properties listed on Airbnb in London, with an average price of £177 per night.
+* Entire apartments are the most popular room type, with 41,120 listings and an average price of £227 per night.
+* Private rooms are the cheapest option, with an average price of £103 per night, but they are also the least available.
+* There are only 403 shared rooms listed on Airbnb in London, with an average price of £97 per night.
+* Hotels have the highest average price per night, at £260.
 
-* Entire/apartment is the most popular room type **(41,120 hosts)** with an average price of **£227.**
-* Private rooms **(27,465)** cheapest option **(£103 average price)** but also the **lowest availability** for rent.
-* Only **403** shared rooms with the **lowest average price**
-* **231** hotels with the **highest average price £260**
+---
+** Conclusions
 
+* Private rooms are the best choice for budget-minded travelers, but there is a demand for more affordable options.
+* The most popular areas for Airbnb rentals are in the center of London, such as Westminster and Kensington and Chelsea.
+* The boroughs with the highest number of unavailable hosts are also the boroughs with the highest average price per night.
+* Hosts who are willing to lower their prices may be able to attract more bookings.
+* The data on reviews does not provide much context for the analysis, but it could be useful for understanding the factors that influence guest satisfaction.
 
-* **Westminster** has the most total hosts **(7758) and rooms (5269)** available in London with an average price of **£345** for available places.
-* **Hackney and Tower Hamlets** has the most booked hosts with an average price of under **£100.**
+---
+Additional Considerations
 
+* The impact of seasonality on the short-term rental market in London. For example, the average price per night is higher in the summer months when demand is higher.
+* The impact of government regulations on the short-term rental market in London. For example, the city of London has recently imposed a cap on the number of days that a property can be rented out on a short-term basis.
+* The opportunities for Airbnb hosts in London. For example, Airbnb hosts can generate passive income, meet new people from all over the world, and learn about different cultures.
 
-* A total of **39931 (57.6%)** hosts are **available**
-
-
-* Available hosts are **£94 (56.6%)** more expensive than Unavaiable.**
-
-
-* **Greenwich and Tower Hamlets** has highest Average **(8.7)** of minimum nights spent
-
-
-* **Westminster** has highest amount of reviews **(156k)** but City of London is reviewed more often on average with **29%.**
-
-
-* **36236 hosts with <5 reviews** have the **highest price and highest average minimum nights spent.**
-
-
-* **Hosts with >20 reviews have the highest availability**
-* **Tower Hamlets, Hackney, Islington, Lambeth and Haringey are outliers as from 33 bouroughs only them has more Unavailable than Available hosts**
-
-**Conclusions**
- > * **Consider the number of hosts available, private rooms are the best choice for the lowest prices but there are many people who prefer to pay more for a whole house/apartment and spend more nights on average**
- > 
- > * **As we get closer to centre of London Total hosts are expanding**
- > 
- > * **Of the top 10 locations with highest number of total hosts, Westminster and Kensington and Chelsea have the highest ratio of available hosts at 68% development or investments should consider locations with the lowest ratios such as Hackney(41%), or Tower Hamlets(49%).** We should also take to consideration other aspects like price or availability of land/houses in different areas etc.
- > 
- > * **The total number of available hosts and the price difference between available and unavaiable hosts appear to be correlated**
- > * **Lowering the price of available hosts closer to the price of unavailable hosts may benefit demand - (more analysis required).**
- > 
- > 
-> * **Data on reviews does not provide much context for the analysis, as we cannot assess its content against e.g positive and negative reviews.**
