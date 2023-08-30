@@ -46,7 +46,6 @@ For Tableau vizualizations click [here](https://public.tableau.com/app/profile/k
 
 * Private rooms are the best choice for budget-minded travelers, but there is a demand for more affordable options.
 * The most popular areas for Airbnb rentals are in the center of London, such as Westminster and Kensington and Chelsea.
-* The boroughs with the highest number of unavailable hosts are also the boroughs with the highest average price per night.
 * Hosts who are willing to lower their prices may be able to attract more bookings.
 
 ---
