@@ -21,9 +21,12 @@ Data collected from - https://www.kaggle.com/datasets/whenamancodes/london-uk-ai
 Additional source - http://insideairbnb.com/
 
 
-Tools:
+#### Tools:
+
 Prepare&Analysis   -> SQL(BigQuery)
+
 Share              -> Vizualizations(Tableau)
+
 ## Process & Analysis
 **[here](https://github.com/kac123451/SQL-Projects/blob/main/AirBNB%20London)**
 
