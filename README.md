@@ -1,4 +1,6 @@
-# Airbnb London Exploration data analysis(EDA)
+# Airbnb London Exploratory data analysis(EDA)
+
+![](Screen1.jpg)
 
 As an entry level junior data analysis I want to present to you my Airbnb London hostings analysis in SQL and Tableau.
 
